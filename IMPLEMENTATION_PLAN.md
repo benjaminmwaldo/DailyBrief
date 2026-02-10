@@ -47,7 +47,7 @@
   - React Email templates
   - Daily brief, magic link, welcome emails
   - Resend integration
-- [ ] **Spec 10** — Brief Generation Engine (`specs/10-brief-generation-engine.md`)
+- [x] **Spec 10** — Brief Generation Engine (`specs/10-brief-generation-engine.md`)
   - Orchestrate news + AI summarization
   - Generate personalized briefs
   - Save to database and send
