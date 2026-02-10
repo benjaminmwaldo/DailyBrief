@@ -53,7 +53,7 @@
   - Save to database and send
 
 ## Phase 5: Delivery & Polish
-- [ ] **Spec 11** — Scheduling System (`specs/11-scheduling-system.md`)
+- [x] **Spec 11** — Scheduling System (`specs/11-scheduling-system.md`)
   - Vercel Cron for hourly brief generation
   - Timezone-aware delivery
   - Batching and rate limiting
