@@ -19,7 +19,7 @@
   - Models: User, Topic, Subscription, ChatMessage, Brief, BriefItem, GlobalEvent, UserPreference
 
 ## Phase 2: Core UI Shell
-- [ ] **Spec 04** — Landing Page (`specs/04-landing-page.md`)
+- [x] **Spec 04** — Landing Page (`specs/04-landing-page.md`)
   - Build conversion-focused landing page
   - Create reusable UI components (Button, Input, Card)
   - Header/footer components
