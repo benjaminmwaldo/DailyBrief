@@ -10,7 +10,7 @@
   - Initialize Next.js with TypeScript, Tailwind CSS
   - Install all dependencies
   - Configure Prisma, utilities, environment variables
-- [ ] **Spec 02** — Authentication (`specs/02-authentication.md`)
+- [x] **Spec 02** — Authentication (`specs/02-authentication.md`)
   - Set up NextAuth v5 with magic link authentication
   - Create sign-in and verification pages
   - Add auth middleware
