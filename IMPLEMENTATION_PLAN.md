@@ -39,7 +39,7 @@
   - Subscribe/unsubscribe, priority management
 
 ## Phase 4: Brief Pipeline
-- [ ] **Spec 08** — News Aggregation Engine (`specs/08-news-aggregation-engine.md`)
+- [x] **Spec 08** — News Aggregation Engine (`specs/08-news-aggregation-engine.md`)
   - News API client (NewsAPI.org)
   - Topic-based aggregation
   - Article scoring and caching
