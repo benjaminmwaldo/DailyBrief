@@ -10,7 +10,6 @@ set -euo pipefail
 # ──────────────────────────────────────────────────────────────────────────
 
 MODEL="${RALPH_MODEL:-sonnet}"
-MAX_TURNS="${RALPH_MAX_TURNS:-200}"
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 cd "$PROJECT_ROOT"
@@ -67,13 +66,12 @@ while true; do
   ITERATION=$((ITERATION + 1))
   log "═══ Iteration $ITERATION  ·  mode=$MODE  ·  model=$MODEL ═══"
 
-  # Run Claude with the prompt file
-  claude \
+  # Run Claude with the prompt file piped via stdin
+  cat "$PROMPT_FILE" | claude \
+    -p \
     --model "$MODEL" \
-    --max-turns "$MAX_TURNS" \
-    --prompt-file "$PROMPT_FILE" \
-    --allowedTools "Bash,Read,Write,Edit,Glob,Grep,WebFetch,WebSearch,TodoRead,TodoWrite" \
-    --yes \
+    --allowedTools "Bash,Read,Write,Edit,Glob,Grep,WebFetch,WebSearch" \
+    --dangerously-skip-permissions \
     2>&1 | tee ".ralph-iteration-${ITERATION}.log"
 
   EXIT_CODE=${PIPESTATUS[0]}
