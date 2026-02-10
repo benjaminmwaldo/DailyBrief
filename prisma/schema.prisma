@@ -76,6 +76,7 @@ model Topic {
   subscriptions Subscription[]
   briefItems    BriefItem[]
 
+  @@unique([name, category])
   @@index([category])
   @@index([isGlobal])
 }

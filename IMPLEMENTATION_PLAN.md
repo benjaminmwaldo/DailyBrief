@@ -33,7 +33,7 @@
   - Conversational AI interface with Claude
   - Topic discovery and subscription via chat
   - Streaming responses, tool calling
-- [ ] **Spec 07** — Topic Subscription Management (`specs/07-topic-subscription-management.md`)
+- [x] **Spec 07** — Topic Subscription Management (`specs/07-topic-subscription-management.md`)
   - Seed default topics (~20-30)
   - Topics browsing with filters
   - Subscribe/unsubscribe, priority management
