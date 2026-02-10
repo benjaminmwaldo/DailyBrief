@@ -23,7 +23,7 @@
   - Build conversion-focused landing page
   - Create reusable UI components (Button, Input, Card)
   - Header/footer components
-- [ ] **Spec 05** — User Dashboard (`specs/05-user-dashboard.md`)
+- [x] **Spec 05** — User Dashboard (`specs/05-user-dashboard.md`)
   - Authenticated dashboard layout
   - Stats, recent briefs, active topics
   - Settings page for preferences
