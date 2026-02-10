@@ -43,7 +43,7 @@
   - News API client (NewsAPI.org)
   - Topic-based aggregation
   - Article scoring and caching
-- [ ] **Spec 09** — Email Templates (`specs/09-email-templates.md`)
+- [x] **Spec 09** — Email Templates (`specs/09-email-templates.md`)
   - React Email templates
   - Daily brief, magic link, welcome emails
   - Resend integration

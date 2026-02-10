@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "email:dev": "email dev"
+    "email:dev": "email dev --dir src/components/emails"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",
