@@ -14,7 +14,7 @@
   - Set up NextAuth v5 with magic link authentication
   - Create sign-in and verification pages
   - Add auth middleware
-- [ ] **Spec 03** — Database Schema (`specs/03-database-schema.md`)
+- [x] **Spec 03** — Database Schema (`specs/03-database-schema.md`)
   - Define complete Prisma schema
   - Models: User, Topic, Subscription, ChatMessage, Brief, BriefItem, GlobalEvent, UserPreference
 
