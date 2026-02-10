@@ -6,7 +6,7 @@
 **Current State:** All planning documents and specifications are complete. No application code has been written yet.
 
 ## Phase 1: Foundation
-- [ ] **Spec 01** — Project Setup (`specs/01-project-setup.md`)
+- [x] **Spec 01** — Project Setup (`specs/01-project-setup.md`)
   - Initialize Next.js with TypeScript, Tailwind CSS
   - Install all dependencies
   - Configure Prisma, utilities, environment variables
