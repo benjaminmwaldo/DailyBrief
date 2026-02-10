@@ -57,7 +57,7 @@
   - Vercel Cron for hourly brief generation
   - Timezone-aware delivery
   - Batching and rate limiting
-- [ ] **Spec 12** — Global Events System (`specs/12-global-events-system.md`)
+- [x] **Spec 12** — Global Events System (`specs/12-global-events-system.md`)
   - Seed global events (holidays, elections, etc.)
   - Auto-include in briefs
   - Events management UI

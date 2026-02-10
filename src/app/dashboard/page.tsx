@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { RecentBriefs } from "@/components/dashboard/recent-briefs";
 import { TopicGrid } from "@/components/dashboard/topic-grid";
+import { UpcomingEvents } from "@/components/dashboard/upcoming-events";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -31,7 +32,7 @@ export default async function DashboardPage() {
   }
 
   // Fetch user data
-  const [subscriptions, briefs, preference] = await Promise.all([
+  const [subscriptions, briefs, preference, upcomingEvents] = await Promise.all([
     prisma.subscription.findMany({
       where: { userId: session.user.id },
       include: { topic: true },
@@ -44,6 +45,18 @@ export default async function DashboardPage() {
     }),
     prisma.userPreference.findUnique({
       where: { userId: session.user.id },
+    }),
+    prisma.globalEvent.findMany({
+      where: {
+        date: {
+          gte: new Date(),
+        },
+        isActive: true,
+      },
+      orderBy: {
+        date: "asc",
+      },
+      take: 5,
     }),
   ]);
 
@@ -113,6 +126,11 @@ export default async function DashboardPage() {
         </div>
         <TopicGrid subscriptions={subscriptions} />
       </div>
+
+      {/* Upcoming Events Widget */}
+      {preference?.includeGlobal && upcomingEvents.length > 0 && (
+        <UpcomingEvents events={upcomingEvents} />
+      )}
 
       {/* Quick Actions */}
       {subscriptions.length === 0 && briefs.length === 0 && (

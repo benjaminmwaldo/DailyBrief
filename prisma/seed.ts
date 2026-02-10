@@ -260,6 +260,194 @@ async function main() {
     });
   }
 
+  console.log('✓ Topics seeded successfully!');
+
+  // Create global events
+  const globalEvents = [
+    // 2026 US Holidays
+    {
+      title: "New Year's Day",
+      description: "The first day of the year, a public holiday in the United States",
+      date: new Date("2026-01-01"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Martin Luther King Jr. Day",
+      description: "Federal holiday honoring the civil rights leader",
+      date: new Date("2026-01-19"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Valentine's Day",
+      description: "Day of romance and love celebrated worldwide",
+      date: new Date("2026-02-14"),
+      category: "cultural",
+      country: null, // worldwide
+      isActive: true,
+    },
+    {
+      title: "Presidents' Day",
+      description: "Federal holiday honoring all U.S. presidents",
+      date: new Date("2026-02-16"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "International Women's Day",
+      description: "Global day celebrating women's achievements and advocating for gender equality",
+      date: new Date("2026-03-08"),
+      category: "cultural",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "St. Patrick's Day",
+      description: "Irish cultural and religious celebration",
+      date: new Date("2026-03-17"),
+      category: "cultural",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "Earth Day",
+      description: "Annual event demonstrating support for environmental protection",
+      date: new Date("2026-04-22"),
+      category: "cultural",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "Memorial Day",
+      description: "Federal holiday honoring those who died while serving in the U.S. military",
+      date: new Date("2026-05-25"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Independence Day",
+      description: "Celebration of U.S. independence from Great Britain",
+      date: new Date("2026-07-04"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Labor Day",
+      description: "Federal holiday celebrating the American labor movement",
+      date: new Date("2026-09-07"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Halloween",
+      description: "Annual celebration with costumes, trick-or-treating, and decorations",
+      date: new Date("2026-10-31"),
+      category: "cultural",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "Veterans Day",
+      description: "Federal holiday honoring military veterans",
+      date: new Date("2026-11-11"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Thanksgiving",
+      description: "National holiday celebrating harvest and other blessings of the past year",
+      date: new Date("2026-11-26"),
+      category: "holiday",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Christmas Eve",
+      description: "Day before Christmas, often celebrated with family gatherings",
+      date: new Date("2026-12-24"),
+      category: "holiday",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "Christmas Day",
+      description: "Christian holiday celebrating the birth of Jesus Christ",
+      date: new Date("2026-12-25"),
+      category: "holiday",
+      country: null,
+      isActive: true,
+    },
+    {
+      title: "New Year's Eve",
+      description: "Final day of the year, celebrated with parties and fireworks",
+      date: new Date("2026-12-31"),
+      category: "holiday",
+      country: null,
+      isActive: true,
+    },
+
+    // 2026 Cultural & Sports Events
+    {
+      title: "Super Bowl LX",
+      description: "The NFL championship game",
+      date: new Date("2026-02-08"),
+      category: "sports",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Academy Awards (Oscars)",
+      description: "Annual awards ceremony honoring cinematic achievements",
+      date: new Date("2026-03-29"),
+      category: "cultural",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "Grammy Awards",
+      description: "Annual awards ceremony for outstanding achievements in music",
+      date: new Date("2026-02-01"),
+      category: "cultural",
+      country: "US",
+      isActive: true,
+    },
+    {
+      title: "FIFA World Cup",
+      description: "International soccer tournament",
+      date: new Date("2026-06-11"),
+      category: "sports",
+      country: null,
+      isActive: true,
+    },
+
+    // 2026 Political Events
+    {
+      title: "U.S. Midterm Elections",
+      description: "Congressional and gubernatorial elections",
+      date: new Date("2026-11-03"),
+      category: "election",
+      country: "US",
+      isActive: true,
+    },
+  ];
+
+  console.log(`Creating ${globalEvents.length} global events...`);
+
+  for (const event of globalEvents) {
+    await prisma.globalEvent.create({
+      data: event,
+    });
+  }
+
+  console.log('✓ Global events seeded successfully!');
   console.log('✓ Database seeded successfully!');
 }
 
