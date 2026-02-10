@@ -29,7 +29,7 @@
   - Settings page for preferences
 
 ## Phase 3: Core Features
-- [ ] **Spec 06** — AI Chat Agent (`specs/06-ai-chat-agent.md`)
+- [x] **Spec 06** — AI Chat Agent (`specs/06-ai-chat-agent.md`)
   - Conversational AI interface with Claude
   - Topic discovery and subscription via chat
   - Streaming responses, tool calling
