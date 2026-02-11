@@ -11,7 +11,6 @@ function SignInContent() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   // Show error from NextAuth callback (e.g., token verification failure)
   const authError = searchParams?.get("error");
