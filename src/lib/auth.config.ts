@@ -9,6 +9,9 @@ export const authConfig = {
       from: process.env.EMAIL_FROM || "briefs@dailybrief.com",
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   pages: {
     signIn: "/sign-in",
     verifyRequest: "/verify",

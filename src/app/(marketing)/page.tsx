@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 export default function LandingPage() {
@@ -182,21 +181,31 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Social Proof Section */}
+      {/* Why DailyBrief Section */}
       <section className="py-20 px-4 bg-white">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Trusted by professionals worldwide
+            Stop doom-scrolling. Start your day informed.
           </h2>
-          <p className="text-lg text-muted-foreground mb-12">
-            Join thousands of busy professionals who start their day with DailyBrief
+          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Most people spend 30+ minutes every morning bouncing between apps and
+            websites to catch up on the news. DailyBrief gives you one clean
+            email with everything that matters to you.
           </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60">
-            <div className="text-2xl font-bold">Forbes</div>
-            <div className="text-2xl font-bold">TechCrunch</div>
-            <div className="text-2xl font-bold">Wired</div>
-            <div className="text-2xl font-bold">The Verge</div>
+          <div className="grid md:grid-cols-3 gap-8 text-left">
+            <div className="space-y-2">
+              <p className="text-3xl font-bold text-primary">30+</p>
+              <p className="text-muted-foreground">Topics to choose from across tech, business, science, sports, and more</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-3xl font-bold text-primary">1 email</p>
+              <p className="text-muted-foreground">Everything you care about, delivered in a single daily digest</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-3xl font-bold text-primary">AI-curated</p>
+              <p className="text-muted-foreground">Summaries written by AI so you get the gist without the fluff</p>
+            </div>
           </div>
         </div>
       </section>
@@ -205,26 +214,19 @@ export default function LandingPage() {
       <section className="py-20 px-4 bg-primary text-primary-foreground">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to transform your mornings?
+            Try it out — it takes 30 seconds
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Start receiving personalized daily briefs tailored to your interests.
-            No credit card required.
+            Sign in with your email, pick your topics, and get your first brief.
+            No credit card, no commitments.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="bg-white text-foreground"
-            />
-            <Button asChild size="lg" variant="outline" className="bg-white text-primary hover:bg-gray-100 sm:whitespace-nowrap">
-              <Link href="/sign-in">Get Started</Link>
-            </Button>
-          </div>
+          <Button asChild size="lg" variant="outline" className="bg-white text-primary hover:bg-gray-100">
+            <Link href="/sign-in">Get Started</Link>
+          </Button>
 
           <p className="text-sm mt-4 opacity-75">
-            Free forever. Unsubscribe anytime.
+            Free to use. Unsubscribe anytime.
           </p>
         </div>
       </section>
