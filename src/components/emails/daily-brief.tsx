@@ -67,17 +67,16 @@ export default function DailyBrief({
 
               {/* Sources */}
               {topic.sources && topic.sources.length > 0 && (
-                <div style={sourcesContainer}>
-                  <Text style={sourcesLabel}>Sources:</Text>
+                <Text style={sourcesLine}>
                   {topic.sources.map((source, sourceIndex) => (
-                    <Text key={sourceIndex} style={sourceItem}>
-                      [{sourceIndex + 1}]{" "}
+                    <span key={sourceIndex}>
+                      {sourceIndex > 0 && <span style={sourcesSeparator}>{" \u00b7 "}</span>}
                       <Link href={source.url} style={sourceLink}>
                         {source.name}
                       </Link>
-                    </Text>
+                    </span>
                   ))}
-                </div>
+                </Text>
               )}
 
               {topicIndex < topics.length - 1 && <Hr style={topicDivider} />}
@@ -191,32 +190,19 @@ const narrativeText = {
   margin: "0 0 16px",
 };
 
-const sourcesContainer = {
-  marginTop: "12px",
-  padding: "12px 16px",
-  backgroundColor: "#f9fafb",
-  borderRadius: "6px",
-  borderLeft: "3px solid #e5e7eb",
-};
-
-const sourcesLabel = {
-  color: "#6b7280",
-  fontSize: "12px",
-  fontWeight: "600",
-  textTransform: "uppercase" as const,
-  letterSpacing: "0.5px",
-  margin: "0 0 8px",
-};
-
-const sourceItem = {
-  color: "#6b7280",
+const sourcesLine = {
   fontSize: "13px",
   lineHeight: "20px",
   margin: "0 0 4px",
+  color: "#9ca3af",
+};
+
+const sourcesSeparator = {
+  color: "#d1d5db",
 };
 
 const sourceLink = {
-  color: "#4f46e5",
+  color: "#9ca3af",
   textDecoration: "none",
 };
 
