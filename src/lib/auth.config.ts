@@ -22,8 +22,7 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isProtectedRoute =
-        nextUrl.pathname.startsWith("/dashboard") ||
-        nextUrl.pathname.startsWith("/chat");
+        nextUrl.pathname.startsWith("/dashboard");
       const isAuthRoute = nextUrl.pathname.startsWith("/sign-in");
 
       if (isProtectedRoute && !isLoggedIn) {

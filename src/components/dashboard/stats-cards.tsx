@@ -21,22 +21,22 @@ export function StatsCards({
       name: "Active Topics",
       value: activeTopics,
       icon: TagIcon,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-950",
     },
     {
       name: "Total Briefs",
       value: totalBriefs,
       icon: EnvelopeIcon,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-green-600 dark:text-green-400",
+      bgColor: "bg-green-50 dark:bg-green-950",
     },
     {
       name: "Next Delivery",
       value: nextDelivery,
       icon: ClockIcon,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-50 dark:bg-purple-950",
     },
   ];
 
@@ -50,10 +50,10 @@ export function StatsCards({
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {stat.name}
                 </p>
-                <p className="text-2xl font-semibold text-gray-900">
+                <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                   {stat.value}
                 </p>
               </div>

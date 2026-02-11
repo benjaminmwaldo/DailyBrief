@@ -9,11 +9,11 @@ import { BriefStatus } from "@prisma/client";
 
 function getBriefStatusBadge(status: BriefStatus) {
   const styles = {
-    PENDING: "bg-yellow-100 text-yellow-800",
-    GENERATING: "bg-blue-100 text-blue-800",
-    READY: "bg-green-100 text-green-800",
-    SENT: "bg-gray-100 text-gray-800",
-    FAILED: "bg-red-100 text-red-800",
+    PENDING: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+    GENERATING: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 dark:bg-blue-900 dark:text-blue-300",
+    READY: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
+    SENT: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+    FAILED: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
   };
 
   return (
@@ -70,10 +70,10 @@ export default async function BriefViewerPage({
 
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               {brief.subject}
             </h1>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-gray-600 dark:text-gray-400">
               {brief.sentAt
                 ? `Sent on ${new Date(brief.sentAt).toLocaleDateString("en-US", {
                     weekday: "long",
@@ -108,7 +108,7 @@ export default async function BriefViewerPage({
               ).map((topicName) => (
                 <span
                   key={topicName}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
                 >
                   {topicName}
                 </span>
@@ -122,7 +122,7 @@ export default async function BriefViewerPage({
       <Card>
         <CardContent className="p-8">
           <div
-            className="prose prose-sm max-w-none"
+            className="prose prose-sm max-w-none dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: brief.htmlContent }}
           />
         </CardContent>
@@ -131,12 +131,12 @@ export default async function BriefViewerPage({
       {/* Alternative: Plain text view */}
       {brief.status !== "SENT" && (
         <details className="text-sm">
-          <summary className="cursor-pointer text-gray-600 hover:text-gray-900">
+          <summary className="cursor-pointer text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white">
             View plain text version
           </summary>
           <Card className="mt-2">
             <CardContent className="p-6">
-              <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700">
+              <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700 dark:text-gray-300">
                 {brief.textContent}
               </pre>
             </CardContent>

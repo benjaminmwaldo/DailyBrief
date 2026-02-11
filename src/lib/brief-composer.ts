@@ -36,17 +36,19 @@ export async function composeBrief(
       continue; // Skip topics with no articles
     }
 
-    const summaries = await summarizeArticles({
+    const result = await summarizeArticles({
       articles: topicItem.articles,
       topicName: topicItem.topicName,
       briefLength: preferences.briefLength as "short" | "medium" | "long",
     });
 
-    if (summaries.length > 0) {
+    if (result.articles.length > 0) {
       topicSections.push({
         name: topicItem.topicName,
-        category: "general", // We can enhance this later with actual category from Topic model
-        articles: summaries,
+        category: "general",
+        articles: result.articles,
+        synthesizedSummary: result.synthesizedSummary,
+        sources: result.sources,
       });
     }
   }
@@ -98,12 +100,14 @@ async function generateSubject(
     return fallbackSubject;
   }
 
-  // Get topic names and top headlines
+  // Get topic names and the start of the synthesized summaries
   const topicInfo = topicSections
-    .slice(0, 3) // Only use first 3 topics
+    .slice(0, 3)
     .map((topic) => {
-      const topArticle = topic.articles[0];
-      return `${topic.name}: ${topArticle?.title || ""}`;
+      const preview = topic.synthesizedSummary
+        ? topic.synthesizedSummary.slice(0, 100)
+        : topic.articles[0]?.title || "";
+      return `${topic.name}: ${preview}`;
     })
     .join("\n");
 

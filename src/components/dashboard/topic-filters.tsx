@@ -73,7 +73,7 @@ export function TopicFilters({
         />
         <label
           htmlFor="show-subscribed"
-          className="text-sm font-medium text-gray-700 cursor-pointer"
+          className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
         >
           Show subscribed only
         </label>

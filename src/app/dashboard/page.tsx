@@ -81,10 +81,10 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           {greeting}, {userName}!
         </h1>
-        <p className="mt-2 text-gray-600">{formatDate()}</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">{formatDate()}</p>
       </div>
 
       {/* Quick Stats */}
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
       {/* Recent Briefs */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
             Recent Briefs
           </h2>
           <Link href="/dashboard/briefs">
@@ -116,7 +116,7 @@ export default async function DashboardPage() {
       {/* Active Topics */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
             Active Topics
           </h2>
           <Link href="/dashboard/topics">
@@ -138,15 +138,15 @@ export default async function DashboardPage() {
 
       {/* Quick Actions */}
       {subscriptions.length === 0 && briefs.length === 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             Get Started with DailyBrief
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
             Chat with our AI to discover topics and start receiving personalized
             daily briefings
           </p>
-          <Link href="/chat">
+          <Link href="/dashboard/chat">
             <Button size="lg">Start Chat</Button>
           </Link>
         </div>

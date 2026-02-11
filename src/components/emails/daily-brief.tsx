@@ -4,7 +4,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -47,50 +46,39 @@ export default function DailyBrief({
           <Section style={greetingSection}>
             <Heading style={greeting}>Good morning, {userName}</Heading>
             <Text style={summary}>
-              Today&apos;s brief covers {topicCount} topic{topicCount !== 1 ? "s" : ""}.
-              Here&apos;s what you need to know:
+              Here&apos;s what you need to know today across {topicCount} topic{topicCount !== 1 ? "s" : ""}:
             </Text>
           </Section>
 
           {/* Topics */}
           {topics.map((topic, topicIndex) => (
             <Section key={topicIndex} style={topicSection}>
-              <Heading style={topicHeading}>
-                {topic.name}
-                <span style={categoryBadge}>{topic.category}</span>
-              </Heading>
+              <Heading style={topicHeading}>{topic.name}</Heading>
 
-              {topic.articles.map((article, articleIndex) => (
-                <div key={articleIndex} style={articleContainer}>
-                  {article.imageUrl && (
-                    <Img
-                      src={article.imageUrl}
-                      alt={article.title}
-                      style={articleImage}
-                      width="600"
-                      height="300"
-                    />
-                  )}
-                  <Heading style={articleTitle}>
-                    <Link href={article.sourceUrl} style={articleLink}>
-                      {article.title}
-                    </Link>
-                  </Heading>
-                  <Text style={articleSummary}>{article.summary}</Text>
-                  <Text style={articleMeta}>
-                    {article.sourceName} •{" "}
-                    {new Intl.DateTimeFormat("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    }).format(new Date(article.publishedAt))}
-                  </Text>
-                  {articleIndex < topic.articles.length - 1 && (
-                    <Hr style={articleDivider} />
-                  )}
+              {/* Synthesized narrative */}
+              {topic.synthesizedSummary ? (
+                <Text style={narrativeText}>{topic.synthesizedSummary}</Text>
+              ) : (
+                /* Fallback: show article summaries if no synthesis */
+                topic.articles.map((article, articleIndex) => (
+                  <Text key={articleIndex} style={narrativeText}>{article.summary}</Text>
+                ))
+              )}
+
+              {/* Sources */}
+              {topic.sources && topic.sources.length > 0 && (
+                <div style={sourcesContainer}>
+                  <Text style={sourcesLabel}>Sources:</Text>
+                  {topic.sources.map((source, sourceIndex) => (
+                    <Text key={sourceIndex} style={sourceItem}>
+                      [{sourceIndex + 1}]{" "}
+                      <Link href={source.url} style={sourceLink}>
+                        {source.name}
+                      </Link>
+                    </Text>
+                  ))}
                 </div>
-              ))}
+              )}
 
               {topicIndex < topics.length - 1 && <Hr style={topicDivider} />}
             </Section>
@@ -100,7 +88,7 @@ export default function DailyBrief({
           {globalEvents && globalEvents.length > 0 && (
             <Section style={globalEventsSection}>
               <Heading style={globalEventsHeading}>
-                📅 Today&apos;s Events
+                Today&apos;s Events
               </Heading>
               {globalEvents.map((event, index) => (
                 <div key={index} style={eventContainer}>
@@ -118,7 +106,7 @@ export default function DailyBrief({
               <Link href={manageTopicsUrl} style={footerLink}>
                 Manage your topics
               </Link>
-              {" • "}
+              {" \u2022 "}
               <Link href={unsubscribeUrl} style={footerLink}>
                 Unsubscribe
               </Link>
@@ -193,69 +181,48 @@ const topicHeading = {
   color: "#1a1a1a",
   fontSize: "20px",
   fontWeight: "600",
-  margin: "0 0 20px",
-  display: "flex",
-  alignItems: "center",
-  gap: "12px",
+  margin: "0 0 16px",
 };
 
-const categoryBadge = {
-  display: "inline-block",
-  backgroundColor: "#e0e7ff",
-  color: "#4f46e5",
-  fontSize: "12px",
-  fontWeight: "500",
-  padding: "4px 12px",
-  borderRadius: "12px",
-  textTransform: "capitalize" as const,
-  marginLeft: "12px",
-};
-
-const articleContainer = {
-  marginBottom: "24px",
-};
-
-const articleImage = {
-  borderRadius: "8px",
-  marginBottom: "16px",
-  width: "100%",
-  height: "auto",
-  objectFit: "cover" as const,
-};
-
-const articleTitle = {
-  fontSize: "18px",
-  fontWeight: "600",
-  margin: "0 0 12px",
-  lineHeight: "26px",
-};
-
-const articleLink = {
-  color: "#1a1a1a",
-  textDecoration: "none",
-};
-
-const articleSummary = {
-  color: "#4b5563",
+const narrativeText = {
+  color: "#374151",
   fontSize: "15px",
-  lineHeight: "22px",
+  lineHeight: "24px",
+  margin: "0 0 16px",
+};
+
+const sourcesContainer = {
+  marginTop: "12px",
+  padding: "12px 16px",
+  backgroundColor: "#f9fafb",
+  borderRadius: "6px",
+  borderLeft: "3px solid #e5e7eb",
+};
+
+const sourcesLabel = {
+  color: "#6b7280",
+  fontSize: "12px",
+  fontWeight: "600",
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.5px",
   margin: "0 0 8px",
 };
 
-const articleMeta = {
-  color: "#9ca3af",
+const sourceItem = {
+  color: "#6b7280",
   fontSize: "13px",
-  margin: "0",
+  lineHeight: "20px",
+  margin: "0 0 4px",
 };
 
-const articleDivider = {
-  borderColor: "#f3f4f6",
-  margin: "20px 0",
+const sourceLink = {
+  color: "#4f46e5",
+  textDecoration: "none",
 };
 
 const topicDivider = {
   borderColor: "#e5e7eb",
-  margin: "32px 0",
+  margin: "28px 0",
 };
 
 const globalEventsSection = {

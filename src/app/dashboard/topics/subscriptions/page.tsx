@@ -203,7 +203,7 @@ export default function SubscriptionsPage() {
               <Link href="/dashboard/topics">
                 <Button>Browse Topics</Button>
               </Link>
-              <Link href="/chat">
+              <Link href="/dashboard/chat">
                 <Button variant="outline">Chat with AI</Button>
               </Link>
             </div>

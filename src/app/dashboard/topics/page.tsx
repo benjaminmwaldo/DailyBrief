@@ -69,8 +69,8 @@ export default function TopicsPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Browse Topics</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Browse Topics</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
               Discover and subscribe to topics you care about
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function TopicsPage() {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-          <p className="mt-4 text-gray-600">Loading topics...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading topics...</p>
         </div>
       ) : filteredTopics.length === 0 ? (
         <div className="text-center py-12">
@@ -116,10 +116,10 @@ export default function TopicsPage() {
               />
             </svg>
           </div>
-          <h3 className="mt-4 text-lg font-medium text-gray-900">
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
             No topics found
           </h3>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Try adjusting your filters or search query
           </p>
         </div>

@@ -6,7 +6,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="py-20 md:py-32 px-4 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-20 md:py-32 px-4 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -30,7 +30,7 @@ export default function LandingPage() {
 
             {/* Visual Element - Email Mockup */}
             <div className="hidden md:block">
-              <div className="bg-white rounded-lg shadow-2xl border p-6 space-y-4">
+              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-2xl border dark:border-gray-700 p-6 space-y-4">
                 <div className="flex items-center gap-3 pb-4 border-b">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
                     DB
@@ -43,21 +43,21 @@ export default function LandingPage() {
 
                 <div className="space-y-3">
                   <div className="space-y-1">
-                    <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-2 bg-gray-100 rounded w-full"></div>
-                    <div className="h-2 bg-gray-100 rounded w-5/6"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-full"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-5/6"></div>
                   </div>
 
                   <div className="space-y-1">
-                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                    <div className="h-2 bg-gray-100 rounded w-full"></div>
-                    <div className="h-2 bg-gray-100 rounded w-4/5"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-full"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-4/5"></div>
                   </div>
 
                   <div className="space-y-1">
-                    <div className="h-3 bg-gray-200 rounded w-3/5"></div>
-                    <div className="h-2 bg-gray-100 rounded w-full"></div>
-                    <div className="h-2 bg-gray-100 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/5"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-full"></div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded w-3/4"></div>
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-4 bg-white">
+      <section id="how-it-works" className="py-20 px-4 bg-white dark:bg-gray-950">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
@@ -117,7 +117,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-gray-50">
+      <section id="features" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -182,7 +182,7 @@ export default function LandingPage() {
       </section>
 
       {/* Why DailyBrief Section */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-white dark:bg-gray-950">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             Stop doom-scrolling. Start your day informed.

@@ -105,7 +105,7 @@ export function SettingsForm({ preference }: SettingsFormProps) {
           <div>
             <label
               htmlFor="timezone"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Timezone
             </label>
@@ -113,7 +113,7 @@ export function SettingsForm({ preference }: SettingsFormProps) {
               id="timezone"
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {timezones.map((tz) => (
                 <option key={tz} value={tz}>
@@ -127,7 +127,7 @@ export function SettingsForm({ preference }: SettingsFormProps) {
           <div>
             <label
               htmlFor="deliveryHour"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Delivery Time
             </label>
@@ -143,11 +143,11 @@ export function SettingsForm({ preference }: SettingsFormProps) {
                 }
                 className="w-24"
               />
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
                 (0-23 hours, 24-hour format)
               </span>
             </div>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Preview: Your briefing will be delivered at approximately{" "}
               <span className="font-medium">{getPreviewTime()}</span> in{" "}
               {timezone}
@@ -156,7 +156,7 @@ export function SettingsForm({ preference }: SettingsFormProps) {
 
           {/* Brief Length */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Brief Length
             </label>
             <div className="space-y-2">
@@ -173,7 +173,7 @@ export function SettingsForm({ preference }: SettingsFormProps) {
                     onChange={(e) => setBriefLength(e.target.value)}
                     className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">{option.label}</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
                 </label>
               ))}
             </div>
@@ -189,10 +189,10 @@ export function SettingsForm({ preference }: SettingsFormProps) {
                 className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
               />
               <div>
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Include global events
                 </span>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Automatically include holidays, major events, and important
                   dates in your briefings
                 </p>
@@ -205,8 +205,8 @@ export function SettingsForm({ preference }: SettingsFormProps) {
             <div
               className={`p-4 rounded-md ${
                 message.type === "success"
-                  ? "bg-green-50 text-green-800"
-                  : "bg-red-50 text-red-800"
+                  ? "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300"
+                  : "bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-300"
               }`}
             >
               {message.text}

@@ -59,16 +59,16 @@ export function TestModePanel() {
   }
 
   return (
-    <div className="border-2 border-dashed border-amber-400 bg-amber-50 rounded-lg p-6">
+    <div className="border-2 border-dashed border-amber-400 dark:border-amber-600 bg-amber-50 dark:bg-amber-950 rounded-lg p-6">
       <div className="flex items-center gap-2 mb-1">
-        <span className="inline-flex items-center rounded-full bg-amber-200 px-2.5 py-0.5 text-xs font-semibold text-amber-800 uppercase tracking-wide">
+        <span className="inline-flex items-center rounded-full bg-amber-200 dark:bg-amber-800 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:text-amber-200 uppercase tracking-wide">
           Test Mode
         </span>
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
         Generate a Brief Now
       </h3>
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         Don&apos;t wait for the daily schedule &mdash; trigger a brief instantly
         to preview what your email will look like.
       </p>
@@ -90,21 +90,21 @@ export function TestModePanel() {
       </div>
 
       {result && (
-        <div className="mt-4 rounded-md bg-green-50 border border-green-200 p-4">
-          <p className="text-sm font-medium text-green-800">
+        <div className="mt-4 rounded-md bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 p-4">
+          <p className="text-sm font-medium text-green-800 dark:text-green-300">
             {result.status === "SENT" ? "Brief sent!" : "Brief generated!"}
           </p>
-          <p className="text-sm text-green-700 mt-1">
+          <p className="text-sm text-green-700 dark:text-green-400 mt-1">
             <strong>Subject:</strong> {result.subject}
           </p>
           {result.itemCount !== undefined && (
-            <p className="text-sm text-green-700">
+            <p className="text-sm text-green-700 dark:text-green-400">
               <strong>Articles:</strong> {result.itemCount}
             </p>
           )}
           <a
             href={`/dashboard/briefs/${result.id}`}
-            className="text-sm text-green-800 underline mt-2 inline-block"
+            className="text-sm text-green-800 dark:text-green-300 underline mt-2 inline-block"
           >
             View brief &rarr;
           </a>
@@ -112,9 +112,9 @@ export function TestModePanel() {
       )}
 
       {error && (
-        <div className="mt-4 rounded-md bg-red-50 border border-red-200 p-4">
-          <p className="text-sm font-medium text-red-800">Error</p>
-          <p className="text-sm text-red-700 mt-1">{error}</p>
+        <div className="mt-4 rounded-md bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 p-4">
+          <p className="text-sm font-medium text-red-800 dark:text-red-300">Error</p>
+          <p className="text-sm text-red-700 dark:text-red-400 mt-1">{error}</p>
         </div>
       )}
     </div>

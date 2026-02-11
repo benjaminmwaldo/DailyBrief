@@ -40,19 +40,19 @@ function SignInContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900">DailyBrief</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">DailyBrief</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
             Sign in to your account
           </p>
         </div>
 
         {authError && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-sm font-medium text-red-800">Sign-in error</p>
-            <p className="text-sm text-red-700 mt-1">
+          <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <p className="text-sm font-medium text-red-800 dark:text-red-300">Sign-in error</p>
+            <p className="text-sm text-red-700 dark:text-red-400 mt-1">
               {authError === "Verification"
                 ? "This magic link has expired or already been used. Please request a new one."
                 : authError === "Configuration"
@@ -63,19 +63,19 @@ function SignInContent() {
         )}
 
         {isSuccess ? (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-            <h2 className="text-lg font-semibold text-green-900 mb-2">
+          <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-6 text-center">
+            <h2 className="text-lg font-semibold text-green-900 dark:text-green-300 mb-2">
               Check your email
             </h2>
-            <p className="text-green-700">
+            <p className="text-green-700 dark:text-green-400">
               We sent a magic link to <strong>{email}</strong>. Click the link in the email to sign in.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-            <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email address
                 </label>
                 <input
@@ -86,15 +86,15 @@ function SignInContent() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="you@example.com"
                   disabled={isLoading}
                 />
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-sm text-red-700">{error}</p>
+                <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                  <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
                 </div>
               )}
 
@@ -116,10 +116,10 @@ function SignInContent() {
 export default function SignInPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-4xl font-bold text-gray-900">DailyBrief</h1>
-          <p className="mt-2 text-gray-600">Loading...</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">DailyBrief</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     }>

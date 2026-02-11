@@ -86,10 +86,10 @@ export function TopicGrid({ subscriptions }: TopicGridProps) {
               />
             </svg>
           </div>
-          <h3 className="mt-4 text-lg font-medium text-gray-900">
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
             No active topics
           </h3>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Start a chat to discover topics that interest you
           </p>
         </CardContent>
@@ -133,7 +133,7 @@ export function TopicGrid({ subscriptions }: TopicGridProps) {
           </CardHeader>
           {subscription.topic.description && (
             <CardContent>
-              <p className="text-sm text-gray-600 line-clamp-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                 {subscription.topic.description}
               </p>
             </CardContent>

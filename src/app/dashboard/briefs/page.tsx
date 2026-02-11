@@ -8,11 +8,11 @@ import { EnvelopeOpenIcon } from "@heroicons/react/24/outline";
 
 function getBriefStatusBadge(status: BriefStatus) {
   const styles = {
-    PENDING: "bg-yellow-100 text-yellow-800",
-    GENERATING: "bg-blue-100 text-blue-800",
-    READY: "bg-green-100 text-green-800",
-    SENT: "bg-gray-100 text-gray-800",
-    FAILED: "bg-red-100 text-red-800",
+    PENDING: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+    GENERATING: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
+    READY: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
+    SENT: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+    FAILED: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
   };
 
   return (
@@ -57,8 +57,8 @@ export default async function BriefsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Your Briefs</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Your Briefs</h1>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
           View all your daily briefings in one place
         </p>
       </div>
@@ -67,10 +67,10 @@ export default async function BriefsPage({
         <Card>
           <CardContent className="p-12 text-center">
             <EnvelopeOpenIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-4 text-lg font-medium text-gray-900">
+            <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
               No briefs yet
             </h3>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Your daily briefings will appear here once you&apos;ve set up
               your topics
             </p>
@@ -80,23 +80,23 @@ export default async function BriefsPage({
         <>
           <Card>
             <CardContent className="p-0">
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {briefs.map((brief) => (
                   <Link
                     key={brief.id}
                     href={`/dashboard/briefs/${brief.id}`}
-                    className="block hover:bg-gray-50 transition-colors"
+                    className="block hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   >
                     <div className="px-6 py-4">
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3">
-                            <h3 className="text-base font-medium text-gray-900">
+                            <h3 className="text-base font-medium text-gray-900 dark:text-white">
                               {brief.subject}
                             </h3>
                             {getBriefStatusBadge(brief.status)}
                           </div>
-                          <p className="mt-1 text-sm text-gray-600">
+                          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                             {brief.sentAt
                               ? `Sent ${new Date(brief.sentAt).toLocaleDateString("en-US", {
                                   month: "long",
@@ -140,18 +140,18 @@ export default async function BriefsPage({
               {page > 1 && (
                 <Link
                   href={`/dashboard/briefs?page=${page - 1}`}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   Previous
                 </Link>
               )}
-              <span className="px-4 py-2 text-sm text-gray-700">
+              <span className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
                 Page {page} of {totalPages}
               </span>
               {page < totalPages && (
                 <Link
                   href={`/dashboard/briefs?page=${page + 1}`}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   Next
                 </Link>

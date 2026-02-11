@@ -8,32 +8,34 @@ export interface SummarizeOptions {
   briefLength: "short" | "medium" | "long";
 }
 
+export interface SynthesisResult {
+  articles: ArticleSummary[];
+  synthesizedSummary: string;
+  sources: { name: string; url: string }[];
+}
+
 /**
  * Summarize news articles using Claude AI
- * Returns concise, engaging summaries for email briefing
+ * Returns a synthesized narrative plus source list
  */
 export async function summarizeArticles(
   options: SummarizeOptions
-): Promise<ArticleSummary[]> {
+): Promise<SynthesisResult> {
   const { articles, topicName, briefLength } = options;
 
   if (articles.length === 0) {
-    return [];
+    return { articles: [], synthesizedSummary: "", sources: [] };
   }
 
   // Determine how many articles to include based on brief length
   const articleCount = getArticleCount(briefLength);
   const selectedArticles = articles.slice(0, articleCount);
 
-  // Determine sentence count per summary
-  const sentenceCount = getSentenceCount(briefLength);
+  // Determine paragraph length guidance
+  const lengthGuidance = getLengthGuidance(briefLength);
 
   // Build prompt for Claude
-  const prompt = buildSummarizationPrompt(
-    selectedArticles,
-    topicName,
-    sentenceCount
-  );
+  const prompt = buildSynthesisPrompt(selectedArticles, topicName, lengthGuidance);
 
   try {
     const response = await anthropic.messages.create({
@@ -53,13 +55,11 @@ export async function summarizeArticles(
       throw new Error("Unexpected response type from Claude");
     }
 
-    // Parse the response into structured summaries
-    const summaries = parseClaudeResponse(content.text, selectedArticles);
-    return summaries;
-  } catch (error) {
-    console.error("Error summarizing articles with Claude:", error);
-    // Fallback: use article descriptions as summaries
-    return selectedArticles.map((article) => ({
+    // Parse the response into synthesis + sources
+    const { synthesis, sources } = parseSynthesisResponse(content.text, selectedArticles);
+
+    // Still build article-level summaries for DB storage
+    const articleSummaries: ArticleSummary[] = selectedArticles.map((article) => ({
       title: article.title,
       summary: article.description.slice(0, 300),
       sourceUrl: article.url,
@@ -67,6 +67,38 @@ export async function summarizeArticles(
       publishedAt: article.publishedAt,
       imageUrl: article.imageUrl || undefined,
     }));
+
+    return {
+      articles: articleSummaries,
+      synthesizedSummary: synthesis,
+      sources,
+    };
+  } catch (error) {
+    console.error("Error summarizing articles with Claude:", error);
+    // Fallback: build a basic synthesis from descriptions
+    const fallbackArticles = selectedArticles.map((article) => ({
+      title: article.title,
+      summary: article.description.slice(0, 300),
+      sourceUrl: article.url,
+      sourceName: article.source,
+      publishedAt: article.publishedAt,
+      imageUrl: article.imageUrl || undefined,
+    }));
+
+    const fallbackSources = selectedArticles.map((article) => ({
+      name: article.source,
+      url: article.url,
+    }));
+
+    const fallbackSynthesis = selectedArticles
+      .map((a) => a.description.slice(0, 200))
+      .join(" ");
+
+    return {
+      articles: fallbackArticles,
+      synthesizedSummary: fallbackSynthesis,
+      sources: fallbackSources,
+    };
   }
 }
 
@@ -87,101 +119,89 @@ function getArticleCount(briefLength: "short" | "medium" | "long"): number {
 }
 
 /**
- * Get sentence count per summary based on brief length
+ * Get length guidance for the synthesis paragraph
  */
-function getSentenceCount(briefLength: "short" | "medium" | "long"): string {
+function getLengthGuidance(briefLength: "short" | "medium" | "long"): string {
   switch (briefLength) {
     case "short":
-      return "1-2 sentences";
+      return "2-3 sentences";
     case "medium":
-      return "2-3 sentences";
+      return "4-5 sentences";
     case "long":
-      return "3-4 sentences";
+      return "6-8 sentences";
     default:
-      return "2-3 sentences";
+      return "4-5 sentences";
   }
 }
 
 /**
- * Build the summarization prompt for Claude
+ * Build the synthesis prompt for Claude
  */
-function buildSummarizationPrompt(
+function buildSynthesisPrompt(
   articles: NewsArticle[],
   topicName: string,
-  sentenceCount: string
+  lengthGuidance: string
 ): string {
   const articleTexts = articles
     .map(
       (article, index) => `
-Article ${index + 1}:
-Title: ${article.title}
+[${index + 1}] "${article.title}"
 Source: ${article.source}
-Content: ${article.content || article.description}
 URL: ${article.url}
+Content: ${article.content || article.description}
 `
     )
     .join("\n---\n");
 
-  return `You are a professional news editor writing for a daily email briefing. Your task is to summarize the following news articles about "${topicName}".
+  return `You are a professional news editor writing a daily email briefing. Synthesize the following articles about "${topicName}" into a single cohesive briefing paragraph.
 
-For each article, write a concise summary of ${sentenceCount}. Your summaries should:
-- Be informative, neutral, and engaging
-- Include key facts and why the story matters
-- Provide relevant context when needed
-- Be written for a general audience
+Write a fluid narrative of ${lengthGuidance} that captures the key developments. Do NOT list articles individually — weave the information together naturally. Reference sources by number like [1], [2], etc.
 
+Articles:
 ${articleTexts}
 
-Please provide your summaries in the following format:
+Respond in EXACTLY this format:
 
-ARTICLE 1:
-[Your ${sentenceCount} summary here]
+SYNTHESIS:
+[Your synthesized paragraph here, referencing sources as [1], [2], etc.]
 
-ARTICLE 2:
-[Your ${sentenceCount} summary here]
-
-...and so on for each article.`;
+SOURCES:
+[1] Source Name - URL
+[2] Source Name - URL
+...and so on for each source used.`;
 }
 
 /**
- * Parse Claude's response into structured ArticleSummary objects
+ * Parse Claude's synthesis response into structured data
  */
-function parseClaudeResponse(
+function parseSynthesisResponse(
   response: string,
   articles: NewsArticle[]
-): ArticleSummary[] {
-  const summaries: ArticleSummary[] = [];
+): { synthesis: string; sources: { name: string; url: string }[] } {
+  // Extract synthesis section
+  const synthesisMatch = response.match(/SYNTHESIS:\s*\n([\s\S]*?)(?=\nSOURCES:|$)/i);
+  const synthesis = synthesisMatch ? synthesisMatch[1].trim() : response.trim();
 
-  // Split by "ARTICLE N:" pattern
-  const sections = response.split(/ARTICLE \d+:/i).filter((s) => s.trim());
+  // Extract sources section
+  const sourcesMatch = response.match(/SOURCES:\s*\n([\s\S]*?)$/i);
+  const sources: { name: string; url: string }[] = [];
 
-  sections.forEach((section, index) => {
-    if (index < articles.length) {
-      const article = articles[index];
-      const summary = section.trim();
-
-      summaries.push({
-        title: article.title,
-        summary,
-        sourceUrl: article.url,
-        sourceName: article.source,
-        publishedAt: article.publishedAt,
-        imageUrl: article.imageUrl || undefined,
-      });
+  if (sourcesMatch) {
+    const sourceLines = sourcesMatch[1].trim().split("\n");
+    for (const line of sourceLines) {
+      const match = line.match(/\[\d+\]\s*(.+?)\s*-\s*(https?:\/\/\S+)/);
+      if (match) {
+        sources.push({ name: match[1].trim(), url: match[2].trim() });
+      }
     }
-  });
-
-  // If parsing failed, fall back to using descriptions
-  if (summaries.length === 0) {
-    return articles.map((article) => ({
-      title: article.title,
-      summary: article.description.slice(0, 300),
-      sourceUrl: article.url,
-      sourceName: article.source,
-      publishedAt: article.publishedAt,
-      imageUrl: article.imageUrl || undefined,
-    }));
   }
 
-  return summaries;
+  // Fallback: if no sources parsed, build from articles
+  if (sources.length === 0) {
+    for (const article of articles) {
+      sources.push({ name: article.source, url: article.url });
+    }
+  }
+
+  return { synthesis, sources };
 }

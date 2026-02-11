@@ -11,6 +11,8 @@ export interface TopicSection {
   name: string;
   category: string;
   articles: ArticleSummary[];
+  synthesizedSummary?: string;
+  sources?: { name: string; url: string }[];
 }
 
 export interface ArticleSummary {

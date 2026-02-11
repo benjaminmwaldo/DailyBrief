@@ -126,18 +126,17 @@ export default function ChatPage() {
       }
     } catch (error) {
       console.error("Failed to send message:", error);
-      // Could add error message to UI here
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex flex-col -mx-4 sm:-mx-6 lg:-mx-8 -my-8" style={{ height: "calc(100vh - 4rem)" }}>
       {/* Header */}
-      <div className="border-b bg-white p-4 dark:bg-gray-900">
+      <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
         <div className="mx-auto max-w-4xl">
-          <h1 className="text-2xl font-bold">Chat with Brief</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Chat with Brief</h1>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Tell me about your interests and I&apos;ll help you set up your daily briefing.
           </p>
@@ -152,7 +151,7 @@ export default function ChatPage() {
           {/* Streaming message */}
           {streamingContent && (
             <div className="flex justify-start px-4">
-              <div className="max-w-[70%] rounded-lg bg-gray-100 px-4 py-3 dark:bg-gray-800">
+              <div className="max-w-[70%] rounded-lg bg-gray-100 dark:bg-gray-800 px-4 py-3">
                 <div className="whitespace-pre-wrap break-words">{streamingContent}</div>
               </div>
             </div>
@@ -180,7 +179,7 @@ export default function ChatPage() {
           {/* Loading indicator */}
           {isLoading && !streamingContent && (
             <div className="flex justify-start px-4">
-              <div className="max-w-[70%] rounded-lg bg-gray-100 px-4 py-3 dark:bg-gray-800">
+              <div className="max-w-[70%] rounded-lg bg-gray-100 dark:bg-gray-800 px-4 py-3">
                 <div className="flex space-x-2">
                   <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500" />
                   <div className="h-2 w-2 animate-bounce rounded-full bg-gray-500 [animation-delay:0.2s]" />

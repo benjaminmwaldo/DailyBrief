@@ -126,13 +126,13 @@ export function TopicCard({ topic, onSubscriptionChange }: TopicCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
           {topic.description || "No description available"}
         </p>
 
         {topic.isSubscribed && (
           <div className="mb-4">
-            <label className="block text-xs font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
               Priority: {priority}
             </label>
             <input
@@ -143,7 +143,7 @@ export function TopicCard({ topic, onSubscriptionChange }: TopicCardProps) {
               onChange={(e) => handlePriorityChange(Number(e.target.value))}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
             />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
               <span>Low</span>
               <span>High</span>
             </div>
