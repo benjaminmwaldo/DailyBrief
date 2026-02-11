@@ -2,12 +2,19 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function SignInPage() {
+function SignInContent() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Show error from NextAuth callback (e.g., token verification failure)
+  const authError = searchParams?.get("error");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +25,7 @@ export default function SignInPage() {
       const result = await signIn("resend", {
         email,
         redirect: false,
+        callbackUrl: "/dashboard",
       });
 
       if (result?.error) {
@@ -41,6 +49,19 @@ export default function SignInPage() {
             Sign in to your account
           </p>
         </div>
+
+        {authError && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-sm font-medium text-red-800">Sign-in error</p>
+            <p className="text-sm text-red-700 mt-1">
+              {authError === "Verification"
+                ? "This magic link has expired or already been used. Please request a new one."
+                : authError === "Configuration"
+                ? "There is a server configuration issue. Please contact support."
+                : `Authentication error: ${authError}`}
+            </p>
+          </div>
+        )}
 
         {isSuccess ? (
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
@@ -90,5 +111,20 @@ export default function SignInPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="max-w-md w-full text-center">
+          <h1 className="text-4xl font-bold text-gray-900">DailyBrief</h1>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 }

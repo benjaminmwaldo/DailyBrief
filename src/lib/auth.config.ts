@@ -3,6 +3,7 @@ import Resend from "next-auth/providers/resend";
 
 // Edge-compatible auth config (no Prisma adapter)
 export const authConfig = {
+  debug: true,
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY,
