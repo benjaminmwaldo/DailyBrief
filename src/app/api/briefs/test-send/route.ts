@@ -3,6 +3,9 @@ import { generateBriefForUser } from "@/lib/brief-generator";
 import { sendBrief } from "@/lib/brief-sender";
 import { NextResponse } from "next/server";
 
+// Allow up to 60s for AI summarization + email send
+export const maxDuration = 60;
+
 /**
  * POST /api/briefs/test-send
  * Generate a brief AND send it via email (test mode).

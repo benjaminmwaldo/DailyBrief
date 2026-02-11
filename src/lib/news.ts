@@ -70,13 +70,16 @@ function parseRssItems(xml: string): NewsArticle[] {
     const description = extractDescription(itemXml);
 
     if (title && link) {
+      const sourceName = source || "Unknown";
+      // Google News RSS titles end with " - Source Name"; strip that
+      const cleanTitle = stripSourceSuffix(decodeHtmlEntities(title), sourceName);
       articles.push({
-        title: decodeHtmlEntities(title),
+        title: cleanTitle,
         description: description ? decodeHtmlEntities(description) : "",
         content: description ? decodeHtmlEntities(description) : "",
         url: link,
         imageUrl: null, // Google News RSS doesn't include images
-        source: source || "Unknown",
+        source: sourceName,
         publishedAt: pubDate ? new Date(pubDate) : new Date(),
       });
     }
@@ -149,6 +152,24 @@ function decodeHtmlEntities(text: string): string {
     .replace(/&nbsp;/g, " ")
     .replace(/&#160;/g, " ")
     .replace(/&#xa0;/gi, " ");
+}
+
+/**
+ * Strip the " - Source Name" suffix that Google News appends to titles.
+ */
+function stripSourceSuffix(title: string, source: string): string {
+  // Try exact match first: "Title - Source"
+  const suffix = ` - ${source}`;
+  if (title.endsWith(suffix)) {
+    return title.slice(0, -suffix.length).trim();
+  }
+  // Fallback: strip anything after the last " - " if it looks like a source
+  const lastDash = title.lastIndexOf(" - ");
+  if (lastDash > 20) {
+    // Only strip if there's substantial title before the dash
+    return title.slice(0, lastDash).trim();
+  }
+  return title;
 }
 
 /**

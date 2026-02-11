@@ -95,8 +95,8 @@ export async function summarizeArticles(
 
   try {
     const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 2000,
+      model: "claude-3-5-haiku-20241022",
+      max_tokens: 1000,
       temperature: 0.5,
       messages: [
         {
@@ -122,10 +122,16 @@ export async function summarizeArticles(
       ? usedIndices.map((i) => candidateArticles[i]).filter(Boolean)
       : candidateArticles.slice(0, 3); // safety fallback
 
-    const sources = usedArticles.map((a) => ({
-      name: cleanText(a.source),
-      url: a.url,
-    }));
+    // Deduplicate sources by name
+    const seenSources = new Set<string>();
+    const sources: { name: string; url: string }[] = [];
+    for (const a of usedArticles) {
+      const name = cleanText(a.source);
+      if (!seenSources.has(name)) {
+        seenSources.add(name);
+        sources.push({ name, url: a.url });
+      }
+    }
 
     // DB storage — keep all candidate articles as brief items
     const articleSummaries: ArticleSummary[] = candidateArticles.map((a) => ({

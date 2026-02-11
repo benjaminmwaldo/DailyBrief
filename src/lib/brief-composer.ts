@@ -28,23 +28,25 @@ export async function composeBrief(
   // Sort topics by priority (not in TopicNews, so we keep original order from generator)
   const sortedTopicNews = topicNews;
 
-  // Summarize articles for each topic
+  // Summarize all topics in parallel for speed
+  const topicsWithArticles = sortedTopicNews.filter((t) => t.articles.length > 0);
+
+  const results = await Promise.all(
+    topicsWithArticles.map((topicItem) =>
+      summarizeArticles({
+        articles: topicItem.articles,
+        topicName: topicItem.topicName,
+        briefLength: preferences.briefLength as "short" | "medium" | "long",
+      })
+    )
+  );
+
   const topicSections: TopicSection[] = [];
-
-  for (const topicItem of sortedTopicNews) {
-    if (topicItem.articles.length === 0) {
-      continue; // Skip topics with no articles
-    }
-
-    const result = await summarizeArticles({
-      articles: topicItem.articles,
-      topicName: topicItem.topicName,
-      briefLength: preferences.briefLength as "short" | "medium" | "long",
-    });
-
+  for (let i = 0; i < topicsWithArticles.length; i++) {
+    const result = results[i];
     if (result.articles.length > 0) {
       topicSections.push({
-        name: topicItem.topicName,
+        name: topicsWithArticles[i].topicName,
         category: "general",
         articles: result.articles,
         synthesizedSummary: result.synthesizedSummary,

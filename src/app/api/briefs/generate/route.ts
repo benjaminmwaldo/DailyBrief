@@ -2,6 +2,9 @@ import { auth } from "@/lib/auth";
 import { generateBriefForUser } from "@/lib/brief-generator";
 import { NextResponse } from "next/server";
 
+// Allow up to 60s for AI summarization across multiple topics
+export const maxDuration = 60;
+
 /**
  * POST /api/briefs/generate
  * Generate a brief for the authenticated user (on-demand)
