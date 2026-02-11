@@ -116,13 +116,12 @@ export async function generateBriefForUser(userId: string): Promise<Brief> {
     for (const topicSection of briefProps.topics) {
       for (const article of topicSection.articles) {
         briefItems.push({
-          briefId: brief.id,
           topicId: topicNews.find((tn) => tn.topicName === topicSection.name)
-            ?.topicId,
+            ?.topicId ?? null,
           title: article.title,
           summary: article.summary,
           sourceUrl: article.sourceUrl,
-          imageUrl: article.imageUrl,
+          imageUrl: article.imageUrl ?? null,
           position: position++,
         });
       }
@@ -132,7 +131,6 @@ export async function generateBriefForUser(userId: string): Promise<Brief> {
     if (briefProps.globalEvents) {
       for (const event of briefProps.globalEvents) {
         briefItems.push({
-          briefId: brief.id,
           topicId: null,
           title: event.title,
           summary: event.description,

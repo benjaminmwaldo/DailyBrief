@@ -121,13 +121,16 @@ function extractSource(xml: string): string | null {
 /**
  * Extract a clean text description from the HTML description field.
  * Google News RSS descriptions contain HTML with links to related articles.
+ * The HTML is often entity-encoded, so we decode entities first, then strip tags.
  */
 function extractDescription(xml: string): string | null {
   const raw = extractTag(xml, "description");
   if (!raw) return null;
 
+  // Decode HTML entities first (Google News encodes HTML as &lt;a href=...&gt;)
+  const decoded = decodeHtmlEntities(raw);
   // Strip HTML tags to get plain text
-  const text = raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const text = decoded.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   return text || null;
 }
 
