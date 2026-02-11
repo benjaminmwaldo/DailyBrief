@@ -15,6 +15,23 @@ export interface SynthesisResult {
 }
 
 /**
+ * Strip residual HTML entities and tags from text
+ */
+function cleanText(text: string): string {
+  return text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#160;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * Summarize news articles using Claude AI
  * Returns a synthesized narrative plus source list
  */
@@ -31,11 +48,32 @@ export async function summarizeArticles(
   const articleCount = getArticleCount(briefLength);
   const selectedArticles = articles.slice(0, articleCount);
 
+  // Clean all article text before sending to Claude
+  const cleanedArticles = selectedArticles.map((a) => ({
+    ...a,
+    title: cleanText(a.title),
+    description: cleanText(a.description),
+    content: cleanText(a.content || a.description),
+  }));
+
+  // Build sources list from articles (always available regardless of AI success)
+  const sources = selectedArticles.map((article) => ({
+    name: cleanText(article.source),
+    url: article.url,
+  }));
+
+  // Build article summaries for DB storage
+  const articleSummaries: ArticleSummary[] = selectedArticles.map((article) => ({
+    title: cleanText(article.title),
+    summary: cleanText(article.description).slice(0, 300),
+    sourceUrl: article.url,
+    sourceName: cleanText(article.source),
+    publishedAt: article.publishedAt,
+    imageUrl: article.imageUrl || undefined,
+  }));
+
   // Determine paragraph length guidance
   const lengthGuidance = getLengthGuidance(briefLength);
-
-  // Build prompt for Claude
-  const prompt = buildSynthesisPrompt(selectedArticles, topicName, lengthGuidance);
 
   try {
     const response = await anthropic.messages.create({
@@ -45,7 +83,7 @@ export async function summarizeArticles(
       messages: [
         {
           role: "user",
-          content: prompt,
+          content: buildSynthesisPrompt(cleanedArticles, topicName, lengthGuidance),
         },
       ],
     });
@@ -55,50 +93,19 @@ export async function summarizeArticles(
       throw new Error("Unexpected response type from Claude");
     }
 
-    // Parse the response into synthesis + sources
-    const { synthesis, sources } = parseSynthesisResponse(content.text, selectedArticles);
+    const synthesis = parseSynthesis(content.text);
 
-    // Still build article-level summaries for DB storage
-    const articleSummaries: ArticleSummary[] = selectedArticles.map((article) => ({
-      title: article.title,
-      summary: article.description.slice(0, 300),
-      sourceUrl: article.url,
-      sourceName: article.source,
-      publishedAt: article.publishedAt,
-      imageUrl: article.imageUrl || undefined,
-    }));
+    if (synthesis.length < 50) {
+      throw new Error("Synthesis too short, likely a parsing failure");
+    }
 
-    return {
-      articles: articleSummaries,
-      synthesizedSummary: synthesis,
-      sources,
-    };
+    return { articles: articleSummaries, synthesizedSummary: synthesis, sources };
   } catch (error) {
     console.error("Error summarizing articles with Claude:", error);
-    // Fallback: build a basic synthesis from descriptions
-    const fallbackArticles = selectedArticles.map((article) => ({
-      title: article.title,
-      summary: article.description.slice(0, 300),
-      sourceUrl: article.url,
-      sourceName: article.source,
-      publishedAt: article.publishedAt,
-      imageUrl: article.imageUrl || undefined,
-    }));
 
-    const fallbackSources = selectedArticles.map((article) => ({
-      name: article.source,
-      url: article.url,
-    }));
-
-    const fallbackSynthesis = selectedArticles
-      .map((a) => a.description.slice(0, 200))
-      .join(" ");
-
-    return {
-      articles: fallbackArticles,
-      synthesizedSummary: fallbackSynthesis,
-      sources: fallbackSources,
-    };
+    // Build a readable fallback from article titles
+    const fallback = buildFallbackSynthesis(cleanedArticles, topicName);
+    return { articles: articleSummaries, synthesizedSummary: fallback, sources };
   }
 }
 
@@ -144,64 +151,54 @@ function buildSynthesisPrompt(
 ): string {
   const articleTexts = articles
     .map(
-      (article, index) => `
-[${index + 1}] "${article.title}"
-Source: ${article.source}
-URL: ${article.url}
-Content: ${article.content || article.description}
-`
+      (article, index) =>
+        `[${index + 1}] "${article.title}" (${article.source})\n${article.content || article.description}`
     )
-    .join("\n---\n");
+    .join("\n\n");
 
-  return `You are a professional news editor writing a daily email briefing. Synthesize the following articles about "${topicName}" into a single cohesive briefing paragraph.
+  return `You are writing a concise daily briefing paragraph about "${topicName}" for an email newsletter.
 
-Write a fluid narrative of ${lengthGuidance} that captures the key developments. Do NOT list articles individually — weave the information together naturally. Reference sources by number like [1], [2], etc.
+Here are today's articles:
 
-Articles:
 ${articleTexts}
 
-Respond in EXACTLY this format:
+Write a single cohesive paragraph of ${lengthGuidance} that synthesizes these stories into a flowing narrative. Do NOT list headlines — write it like a newspaper briefing column. Naturally reference which source reported what using bracketed numbers like [1], [2], etc.
 
-SYNTHESIS:
-[Your synthesized paragraph here, referencing sources as [1], [2], etc.]
-
-SOURCES:
-[1] Source Name - URL
-[2] Source Name - URL
-...and so on for each source used.`;
+Important: Output ONLY the briefing paragraph. No headings, no labels, no "SYNTHESIS:" prefix, no source list. Just the paragraph text.`;
 }
 
 /**
- * Parse Claude's synthesis response into structured data
+ * Parse the synthesis from Claude's response
  */
-function parseSynthesisResponse(
-  response: string,
-  articles: NewsArticle[]
-): { synthesis: string; sources: { name: string; url: string }[] } {
-  // Extract synthesis section
-  const synthesisMatch = response.match(/SYNTHESIS:\s*\n([\s\S]*?)(?=\nSOURCES:|$)/i);
-  const synthesis = synthesisMatch ? synthesisMatch[1].trim() : response.trim();
+function parseSynthesis(response: string): string {
+  let text = response.trim();
 
-  // Extract sources section
-  const sourcesMatch = response.match(/SOURCES:\s*\n([\s\S]*?)$/i);
-  const sources: { name: string; url: string }[] = [];
+  // Strip any prefix labels Claude might add despite instructions
+  text = text.replace(/^(SYNTHESIS|BRIEFING|SUMMARY|PARAGRAPH):\s*/i, "");
 
-  if (sourcesMatch) {
-    const sourceLines = sourcesMatch[1].trim().split("\n");
-    for (const line of sourceLines) {
-      const match = line.match(/\[\d+\]\s*(.+?)\s*-\s*(https?:\/\/\S+)/);
-      if (match) {
-        sources.push({ name: match[1].trim(), url: match[2].trim() });
-      }
-    }
+  // Strip any trailing sources section
+  const sourcesIdx = text.search(/\n\s*(SOURCES|REFERENCES):/i);
+  if (sourcesIdx > 0) {
+    text = text.slice(0, sourcesIdx).trim();
   }
 
-  // Fallback: if no sources parsed, build from articles
-  if (sources.length === 0) {
-    for (const article of articles) {
-      sources.push({ name: article.source, url: article.url });
-    }
+  return text;
+}
+
+/**
+ * Build a readable fallback when Claude fails
+ */
+function buildFallbackSynthesis(articles: NewsArticle[], topicName: string): string {
+  if (articles.length === 0) return "";
+
+  const headlines = articles.map(
+    (a, i) => `${a.title} [${i + 1}]`
+  );
+
+  if (articles.length === 1) {
+    return `In ${topicName} today: ${headlines[0]}.`;
   }
 
-  return { synthesis, sources };
+  const last = headlines.pop();
+  return `In ${topicName} today: ${headlines.join("; ")}; and ${last}.`;
 }

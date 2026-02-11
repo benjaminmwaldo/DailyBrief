@@ -19,12 +19,12 @@ export function UserMenu() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors max-w-full overflow-hidden"
       >
-        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+        <div className="w-8 h-8 flex-shrink-0 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
           {session.user.email?.[0].toUpperCase() || "U"}
         </div>
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden md:block">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden md:block truncate">
           {session.user.email}
         </span>
       </button>
