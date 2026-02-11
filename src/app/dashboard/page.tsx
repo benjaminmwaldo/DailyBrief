@@ -7,6 +7,7 @@ import { StatsCards } from "@/components/dashboard/stats-cards";
 import { RecentBriefs } from "@/components/dashboard/recent-briefs";
 import { TopicGrid } from "@/components/dashboard/topic-grid";
 import { UpcomingEvents } from "@/components/dashboard/upcoming-events";
+import { TestModePanel } from "@/components/dashboard/test-mode-panel";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -131,6 +132,9 @@ export default async function DashboardPage() {
       {preference?.includeGlobal && upcomingEvents.length > 0 && (
         <UpcomingEvents events={upcomingEvents} />
       )}
+
+      {/* Test Mode */}
+      <TestModePanel />
 
       {/* Quick Actions */}
       {subscriptions.length === 0 && briefs.length === 0 && (
